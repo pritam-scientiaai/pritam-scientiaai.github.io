@@ -1,10 +1,436 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Introduction</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhanisth - The Future of Spatial Computing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
 </head>
-<body>
-  <h1>I am Dhanisth Sarawagi</h1>
+<body class="bg-black text-white font-sans overflow-x-hidden">
+    <!-- Navigation -->
+    <nav class="glass-effect fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-bold gradient-text">Dhanisth</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#overview" class="px-3 py-2 rounded-md text-sm font-medium hover:text-blue-400 transition">Overview</a>
+                        <a href="#features" class="px-3 py-2 rounded-md text-sm font-medium hover:text-purple-400 transition">Features</a>
+                        <a href="#tech" class="px-3 py-2 rounded-md text-sm font-medium hover:text-pink-400 transition">Technology</a>
+                        <a href="#order" class="px-3 py-2 rounded-md text-sm font-medium hover:text-green-400 transition">Order</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button class="mobile-menu-button p-2 rounded-md text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu hidden md:hidden fixed inset-0 z-40 bg-black bg-opacity-90 pt-20">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+            <a href="#overview" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800">Overview</a>
+            <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800">Features</a>
+            <a href="#tech" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800">Technology</a>
+            <a href="#order" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-800">Order</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
+        <div class="absolute inset-0 bg-gradient-to-b from-blue-900/20 via-purple-900/20 to-pink-900/20"></div>
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2232&auto=format&fit=crop')] opacity-20 parallax"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                <span class="gradient-text">Dhanisth</span> Pro
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                The ultimate spatial computing experience. See the world in a whole new dimension.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#order" class="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full font-semibold hover:opacity-90 transition">
+                    Order Now
+                </a>
+                <a href="#overview" class="px-8 py-4 border border-white rounded-full font-semibold hover:bg-white hover:text-black transition">
+                    Learn More
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Welcome to the era of <span class="gradient-text">spatial computing</span></h2>
+                <p class="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto">
+                    Dhanisth Pro seamlessly blends digital content with your physical space. Navigate using just your eyes, hands, and voice.
+                </p>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row items-center gap-12 mb-20">
+                <div class="lg:w-1/2">
+                    <div class="relative floating">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-blue-500/30 to-purple-600/30 rounded-2xl blur-lg"></div>
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2232&auto=format&fit=crop" alt="Dhanisth Pro" class="relative rounded-2xl w-full">
+                    </div>
+                </div>
+                <div class="lg:w-1/2">
+                    <h3 class="text-2xl md:text-4xl font-bold mb-6">The most advanced spatial experience</h3>
+                    <p class="text-gray-300 mb-6">
+                        Dhanisth Pro features our most advanced spatial operating system, allowing you to interact with digital content as if it's physically present in your space.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-eye text-blue-400 mt-1 mr-3"></i>
+                            <span>Eye tracking with ultra-precise responsiveness</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-hand-pointer text-purple-400 mt-1 mr-3"></i>
+                            <span>Natural hand gestures for intuitive control</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-microphone text-pink-400 mt-1 mr-3"></i>
+                            <span>Voice commands for seamless navigation</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Unparalleled <span class="gradient-text">Features</span></h2>
+                <p class="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto">
+                    Experience the future with cutting-edge technology designed to transform how you work, play, and connect.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="glass-effect p-8 rounded-2xl hover:scale-105 transition duration-300">
+                    <div class="text-blue-400 text-4xl mb-4">
+                        <i class="fas fa-vr-cardboard"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Immersive Display</h3>
+                    <p class="text-gray-300">
+                        Ultra-high-resolution micro-OLED displays with 23 million pixels for stunning clarity.
+                    </p>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl hover:scale-105 transition duration-300">
+                    <div class="text-purple-400 text-4xl mb-4">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Neural Engine</h3>
+                    <p class="text-gray-300">
+                        Our custom neural processor enables real-time sensor processing with ultra-low latency.
+                    </p>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl hover:scale-105 transition duration-300">
+                    <div class="text-pink-400 text-4xl mb-4">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Spatial Navigation</h3>
+                    <p class="text-gray-300">
+                        Advanced spatial mapping creates a 3D model of your environment for perfect integration.
+                    </p>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl hover:scale-105 transition duration-300">
+                    <div class="text-green-400 text-4xl mb-4">
+                        <i class="fas fa-battery-three-quarters"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">All-Day Battery</h3>
+                    <p class="text-gray-300">
+                        External battery pack provides up to 12 hours of continuous spatial computing.
+                    </p>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl hover:scale-105 transition duration-300">
+                    <div class="text-yellow-400 text-4xl mb-4">
+                        <i class="fas fa-user-astronaut"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Personalized Fit</h3>
+                    <p class="text-gray-300">
+                        Customizable headband and light seal for optimal comfort and immersive experience.
+                    </p>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl hover:scale-105 transition duration-300">
+                    <div class="text-red-400 text-4xl mb-4">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">3D Capture</h3>
+                    <p class="text-gray-300">
+                        Capture spatial photos and videos with our advanced 3D camera system.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section id="tech" class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2232&auto=format&fit=crop')] opacity-10 parallax"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Breakthrough <span class="gradient-text">Technology</span></h2>
+                <p class="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto">
+                    Dhanisth Pro is packed with innovations that create an unprecedented spatial experience.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold mb-3">Advanced Eye Tracking</h3>
+                        <p class="text-gray-300">
+                            High-speed cameras and LEDs track your eyes with incredible precision, enabling intuitive input and foveated rendering.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold mb-3">Spatial Audio</h3>
+                        <p class="text-gray-300">
+                            Dual-driver audio pods positioned next to each ear deliver personalized spatial audio that adapts to your environment.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold mb-3">Revolutionary Materials</h3>
+                        <p class="text-gray-300">
+                            The enclosure is made from a custom aluminum alloy and laminated glass that's both lightweight and durable.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <div class="absolute -inset-8 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-3xl blur-xl"></div>
+                    <img src="https://images.unsplash.com/photo-1677442135135-4c0365aec908?q=80&w=2232&auto=format&fit=crop" alt="Dhanisth Technology" class="relative rounded-2xl w-full floating">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Section -->
+    <section id="order" class="py-20 bg-gradient-to-b from-gray-900 to-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Experience <span class="gradient-text">Dhanisth Pro</span></h2>
+                <p class="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto">
+                    Available now starting at $3,499. Customize your Dhanisth Pro with optional accessories.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="glass-effect p-8 rounded-2xl text-center">
+                    <h3 class="text-xl font-bold mb-4">Dhanisth Pro</h3>
+                    <div class="text-4xl font-bold mb-6">$3,499</div>
+                    <ul class="space-y-3 mb-8 text-gray-300">
+                        <li>256GB Storage</li>
+                        <li>All-day battery</li>
+                        <li>Solo Knit Band</li>
+                        <li>Light Seal</li>
+                    </ul>
+                    <button class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full font-semibold hover:opacity-90 transition">
+                        Buy Now
+                    </button>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl text-center border-2 border-purple-500 relative">
+                    <div class="absolute top-0 right-0 bg-purple-500 text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg">POPULAR</div>
+                    <h3 class="text-xl font-bold mb-4">Dhanisth Pro</h3>
+                    <div class="text-4xl font-bold mb-6">$3,699</div>
+                    <ul class="space-y-3 mb-8 text-gray-300">
+                        <li>512GB Storage</li>
+                        <li>All-day battery</li>
+                        <li>Dual Loop Band</li>
+                        <li>Light Seal + 2 Cushions</li>
+                    </ul>
+                    <button class="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full font-semibold hover:opacity-90 transition">
+                        Buy Now
+                    </button>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl text-center">
+                    <h3 class="text-xl font-bold mb-4">Dhanisth Pro</h3>
+                    <div class="text-4xl font-bold mb-6">$3,899</div>
+                    <ul class="space-y-3 mb-8 text-gray-300">
+                        <li>1TB Storage</li>
+                        <li>All-day battery</li>
+                        <li>Dual Loop Band</li>
+                        <li>Light Seal + 4 Cushions</li>
+                        <li>Travel Case</li>
+                    </ul>
+                    <button class="w-full py-3 bg-gradient-to-r from-pink-500 to-red-600 rounded-full font-semibold hover:opacity-90 transition">
+                        Buy Now
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mt-16 text-center">
+                <p class="text-gray-400 mb-6">Need help choosing the right Dhanisth Pro?</p>
+                <a href="#" class="inline-flex items-center text-blue-400 hover:text-blue-300">
+                    <span>Chat with a specialist</span>
+                    <i class="fas fa-chevron-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Shop and Learn</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Store</a></li>
+                        <li><a href="#" class="hover:text-white">Dhanisth Pro</a></li>
+                        <li><a href="#" class="hover:text-white">Accessories</a></li>
+                        <li><a href="#" class="hover:text-white">Gift Cards</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Services</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Dhanisth Care</a></li>
+                        <li><a href="#" class="hover:text-white">Software Updates</a></li>
+                        <li><a href="#" class="hover:text-white">Repairs</a></li>
+                        <li><a href="#" class="hover:text-white">Trade In</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Account</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Manage Your Account</a></li>
+                        <li><a href="#" class="hover:text-white">Order Status</a></li>
+                        <li><a href="#" class="hover:text-white">Shopping Help</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">About Dhanisth</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Newsroom</a></li>
+                        <li><a href="#" class="hover:text-white">Investors</a></li>
+                        <li><a href="#" class="hover:text-white">Ethics & Compliance</a></li>
+                        <li><a href="#" class="hover:text-white">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+                <div class="text-gray-400 mb-4 md:mb-0">
+                    Copyright © 2023 Dhanisth Inc. All rights reserved.
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add scroll animation class
+        const observerOptions = {
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fadeIn');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
 </body>
 </html>
