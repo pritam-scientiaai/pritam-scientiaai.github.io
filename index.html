@@ -144,25 +144,28 @@
     <h1>You've been rickrolled.</h1>
     <button id="restart-btn">Start Again</button>
     <button class="audio-btn" id="audio-btn">Play Audio</button>
-    <audio id="rick-audio" src="https://cdn.glitch.global/6e2e7b2d-2e2e-4e7e-8e2e-2e2e2e2e2e2e/rickroll.mp3?v=1688570000000"></audio>
+    <audio id="rick-audio" src="assets/rickroll.mp3"></audio>
   </div>
   <pre class="ascii-doodle" id="ascii-doodle"></pre>
   <script>
-    // --- Rickroll Frame Data ---
-    // We'll use a public sprite sheet of Rick Astley, or a list of frame URLs (low-res, ~100 frames)
-    // For demo, we'll use a sample sprite sheet (replace with a real one for production)
-    // Example sprite sheet: https://raw.githubusercontent.com/egfx/rickroll-sprite/main/rickroll-sprite-10x10.jpg
-    // 10x10 grid, 100 frames, each 160x90 px
-    const SPRITE_URL = 'https://raw.githubusercontent.com/egfx/rickroll-sprite/main/rickroll-sprite-10x10.jpg';
-    const SPRITE_COLS = 10;
-    const SPRITE_ROWS = 10;
-    const FRAME_WIDTH = 160;
-    const FRAME_HEIGHT = 90;
-    const TOTAL_FRAMES = 100;
-    // We'll scale up to 320x180 for canvas
-    const CANVAS_WIDTH = 320;
-    const CANVAS_HEIGHT = 180;
-
+    // --- Rickroll GIF Frame Extraction ---
+    // We'll use the local gif and extract frames using an offscreen canvas
+    // We'll use a library to extract gif frames (gifuct-js)
+    // Load gifuct-js from CDN
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/gifuct-js@1.0.2/dist/gifuct.min.js';
+    document.head.appendChild(script);
+    script.onload = () => {
+      fetch('assets/rickroll.gif')
+        .then(res => res.arrayBuffer())
+        .then(buf => {
+          const gif = window.gifuct.parseGIF(buf);
+          const frames = window.gifuct.decompressFrames(gif, true);
+          window.rickFrames = frames;
+          window.rickTotalFrames = frames.length;
+          renderFrame(0);
+        });
+    };
     // --- ASCII Doodle Frames (from ascii.live/rick, 8 frames) ---
     const ASCII_FRAMES = [
 `  o/\n /|\n / \\n`,
@@ -175,20 +178,11 @@
 ` \no\n/|\n / \\n`
     ];
     const ASCII_FRAME_COUNT = ASCII_FRAMES.length;
-
     // --- Canvas Setup ---
     const canvas = document.getElementById('rick-canvas');
     const ctx = canvas.getContext('2d');
-    let spriteImg = new window.Image();
-    spriteImg.crossOrigin = 'anonymous';
-    spriteImg.src = SPRITE_URL;
-    let spriteLoaded = false;
-    spriteImg.onload = () => { spriteLoaded = true; renderFrame(currentFrame); };
-
-    // --- Scroll Animation Logic ---
     let currentFrame = 0;
     function getScrollProgress() {
-      // The rickroll-section is 200vh, so we want to map scroll from top to bottom of that section
       const section = document.querySelector('.rickroll-section');
       const rect = section.getBoundingClientRect();
       const windowHeight = window.innerHeight;
@@ -199,27 +193,29 @@
       return scrolled / totalScroll;
     }
     function renderFrame(frameIdx) {
-      if (!spriteLoaded) return;
-      frameIdx = Math.max(0, Math.min(TOTAL_FRAMES-1, Math.floor(frameIdx)));
-      const col = frameIdx % SPRITE_COLS;
-      const row = Math.floor(frameIdx / SPRITE_COLS);
-      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      ctx.drawImage(
-        spriteImg,
-        col * FRAME_WIDTH, row * FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT,
-        0, 0, CANVAS_WIDTH, CANVAS_HEIGHT
-      );
+      if (!window.rickFrames) return;
+      frameIdx = Math.max(0, Math.min(window.rickTotalFrames-1, Math.floor(frameIdx)));
+      const frame = window.rickFrames[frameIdx];
+      // Draw frame to canvas
+      const tmp = document.createElement('canvas');
+      tmp.width = frame.dims.width;
+      tmp.height = frame.dims.height;
+      const tctx = tmp.getContext('2d');
+      tctx.putImageData(frame.patch, 0, 0);
+      // Fit to canvas size
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(tmp, 0, 0, canvas.width, canvas.height);
     }
     function renderAscii(frameIdx) {
       const ascii = ASCII_FRAMES[frameIdx % ASCII_FRAME_COUNT];
       document.getElementById('ascii-doodle').textContent = ascii;
     }
     function onScroll() {
+      if (!window.rickFrames) return;
       const progress = getScrollProgress();
-      currentFrame = Math.floor(progress * (TOTAL_FRAMES-1));
+      currentFrame = Math.floor(progress * (window.rickTotalFrames-1));
       renderFrame(currentFrame);
       renderAscii(currentFrame);
-      // Show punchline if at bottom
       if (progress >= 0.99) {
         document.getElementById('punchline').style.display = 'flex';
       } else {
@@ -229,32 +225,26 @@
     window.addEventListener('scroll', () => {
       requestAnimationFrame(onScroll);
     });
-    // Initial render
-    renderFrame(0);
     renderAscii(0);
-
     // --- Punchline and Restart Logic ---
     document.getElementById('restart-btn').onclick = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => {
         document.getElementById('punchline').style.display = 'none';
       }, 800);
-      // Pause audio if playing
       const audio = document.getElementById('rick-audio');
       audio.pause();
       audio.currentTime = 0;
     };
-    // --- Audio Play Logic ---
     document.getElementById('audio-btn').onclick = () => {
       const audio = document.getElementById('rick-audio');
       audio.play();
     };
-    // --- Responsive Canvas ---
     function resizeCanvas() {
       const container = document.querySelector('.canvas-container');
       const width = container.offsetWidth;
       canvas.width = width;
-      canvas.height = width * (CANVAS_HEIGHT / CANVAS_WIDTH);
+      canvas.height = width * (9/16);
       renderFrame(currentFrame);
     }
     window.addEventListener('resize', resizeCanvas);
