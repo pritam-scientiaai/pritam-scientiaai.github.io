@@ -211,12 +211,10 @@
             const frameW      = sprite.width;
             const frameH      = sprite.height / FRAMES;
 
-            // Set canvas size to match frame aspect ratio
+            // Set canvas size to 640x640
             function resizeCanvas() {
-                const containerWidth = videoBox.offsetWidth;
-                const aspect = frameW / frameH;
-                canvas.width = containerWidth;
-                canvas.height = containerWidth / aspect;
+                canvas.width = 640;
+                canvas.height = 640;
             }
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
@@ -230,7 +228,22 @@
             function drawFrame(index) {
                 const f = Math.floor((index / TOTAL_FRAMES) * FRAMES);
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(sprite, 0, f * frameH, frameW, frameH, 0, 0, canvas.width, canvas.height);
+                // Contain logic: fit frame in 640x640, letterbox if needed
+                const frameAspect = frameW / frameH;
+                const canvasAspect = canvas.width / canvas.height;
+                let dw, dh, dx, dy;
+                if (canvasAspect > frameAspect) {
+                    dh = canvas.height;
+                    dw = dh * frameAspect;
+                    dx = (canvas.width - dw) / 2;
+                    dy = 0;
+                } else {
+                    dw = canvas.width;
+                    dh = dw / frameAspect;
+                    dx = 0;
+                    dy = (canvas.height - dh) / 2;
+                }
+                ctx.drawImage(sprite, 0, f * frameH, frameW, frameH, dx, dy, dw, dh);
             }
         
             /* ---------- 4.  AUTO-SCROLL + FRAME SYNC ---------- */
