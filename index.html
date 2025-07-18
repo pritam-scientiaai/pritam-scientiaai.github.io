@@ -1,254 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mystery Awaits...</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      background: #111;
-      color: #fff;
-      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-      overflow-x: hidden;
-    }
-    .mystery {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(180deg, #111 60%, #222 100%);
-      letter-spacing: 0.05em;
-      font-size: 2.2rem;
-      font-weight: 600;
-      text-align: center;
-      position: relative;
-      z-index: 2;
-    }
-    .scroll-down {
-      margin-top: 2rem;
-      font-size: 1.1rem;
-      opacity: 0.6;
-      animation: blink 2s infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 0.6; }
-      50% { opacity: 1; }
-    }
-    .rickroll-section {
-      min-height: 200vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      background: linear-gradient(180deg, #222 0%, #111 100%);
-      position: relative;
-      z-index: 1;
-    }
-    .canvas-container {
-      width: 90vw;
-      max-width: 480px;
-      margin: 0 auto;
-      margin-top: 10vh;
-      box-shadow: 0 8px 32px #0008;
-      border-radius: 1.5rem;
-      overflow: hidden;
-      background: #181818;
-      position: relative;
-    }
-    canvas {
-      width: 100%;
-      height: auto;
-      display: block;
-      background: #000;
-    }
-    .punchline {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(10,10,10,0.98);
-      z-index: 10;
-      text-align: center;
-      animation: fadeIn 1s;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    .punchline h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-      color: #ff5e62;
-      letter-spacing: 0.1em;
-    }
-    .punchline button, .punchline .audio-btn {
-      margin: 1rem auto 0 auto;
-      padding: 0.8rem 2.2rem;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 2rem;
-      background: linear-gradient(90deg, #ff9966, #ff5e62);
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-      box-shadow: 0 2px 12px #0004;
-    }
-    .punchline .audio-btn {
-      background: linear-gradient(90deg, #43cea2, #185a9d);
-      margin-top: 0.5rem;
-    }
-    .ascii-doodle {
-      position: fixed;
-      right: 1vw;
-      bottom: 1vw;
-      z-index: 20;
-      font-size: 0.85rem;
-      line-height: 1.1;
-      color: #ff5e62;
-      background: rgba(20,20,20,0.85);
-      border-radius: 0.5rem;
-      padding: 0.3rem 0.5rem;
-      font-family: 'Fira Mono', 'Consolas', monospace;
-      pointer-events: none;
-      user-select: none;
-      min-width: 5.5em;
-      min-height: 3.5em;
-      text-align: left;
-    }
-    @media (max-width: 600px) {
-      .mystery { font-size: 1.2rem; }
-      .canvas-container { max-width: 98vw; }
-      .ascii-doodle { font-size: 0.7rem; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystery Awaits</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 500vh;
+            position: relative;
+        }
+
+        #top-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        #mystery-text {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 2s ease-out forwards;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+
+        #scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        #video-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 800px;
+            height: 60vh;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #video-canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        #bottom-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #punchline {
+            font-size: clamp(2rem, 5vw, 4rem);
+            margin-bottom: 2rem;
+            color: #ff6b6b;
+            text-shadow: 0 0 30px rgba(255,107,107,0.5);
+        }
+
+        #restart-btn, #play-audio-btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #ff6b6b, #ff8787);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin: 10px;
+        }
+
+        #restart-btn:hover, #play-audio-btn:hover {
+            transform: scale(1.1);
+        }
+
+        #ascii-doodle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-family: monospace;
+            font-size: 6px;
+            line-height: 6px;
+            color: rgba(255,255,255,0.3);
+            white-space: pre;
+            pointer-events: none;
+            z-index: 1000;
+            transform-origin: bottom right;
+        }
+
+        #audio-controls {
+            display: none;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            #video-container {
+                width: 95%;
+                height: 40vh;
+            }
+            
+            #ascii-doodle {
+                font-size: 4px;
+                line-height: 4px;
+                bottom: 10px;
+                right: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="mystery">
-    <div>What lies below will blow your mind...</div>
-    <div class="scroll-down">▼ Scroll down ▼</div>
-  </div>
-  <div class="rickroll-section">
-    <div class="canvas-container">
-      <canvas id="rick-canvas" width="320" height="180"></canvas>
+    <div id="top-section">
+        <h1 id="mystery-text">What lies below will blow your mind...</h1>
+        <p id="scroll-indicator">Scroll to reveal the mystery ↓</p>
     </div>
-  </div>
-  <div class="punchline" id="punchline">
-    <h1>You've been rickrolled.</h1>
-    <button id="restart-btn">Start Again</button>
-    <button class="audio-btn" id="audio-btn">Play Audio</button>
-    <audio id="rick-audio" src="assets/rickroll.mp3"></audio>
-  </div>
-  <pre class="ascii-doodle" id="ascii-doodle"></pre>
-  <script>
-    // --- Rickroll GIF Frame Extraction ---
-    // We'll use the local gif and extract frames using an offscreen canvas
-    // We'll use a library to extract gif frames (gifuct-js)
-    // Load gifuct-js from CDN
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/gifuct-js@1.0.2/dist/gifuct.js';
-    document.head.appendChild(script);
-    script.onload = () => {
-      fetch('assets/rickroll.gif')
-        .then(res => res.arrayBuffer())
-        .then(buf => {
-          const gif = window.gifuct.parseGIF(buf);
-          const frames = window.gifuct.decompressFrames(gif, true);
-          window.rickFrames = frames;
-          window.rickTotalFrames = frames.length;
-          renderFrame(0);
-        });
-    };
-    // --- ASCII Doodle Frames (from ascii.live/rick, 8 frames) ---
-    const ASCII_FRAMES = [
-`  o/\n /|\n / \\n`,
-` \no\n/|\n / \\n`,
-`  o/\n /|\n / \\n`,
-` \no\n/|\n / \\n`,
-`  o/\n /|\n / \\n`,
-` \no\n/|\n / \\n`,
-`  o/\n /|\n / \\n`,
-` \no\n/|\n / \\n`
-    ];
-    const ASCII_FRAME_COUNT = ASCII_FRAMES.length;
-    // --- Canvas Setup ---
-    const canvas = document.getElementById('rick-canvas');
-    const ctx = canvas.getContext('2d');
-    let currentFrame = 0;
-    function getScrollProgress() {
-      const section = document.querySelector('.rickroll-section');
-      const rect = section.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const totalScroll = section.offsetHeight - windowHeight;
-      let scrolled = -rect.top;
-      if (scrolled < 0) scrolled = 0;
-      if (scrolled > totalScroll) scrolled = totalScroll;
-      return scrolled / totalScroll;
-    }
-    function renderFrame(frameIdx) {
-      if (!window.rickFrames) return;
-      frameIdx = Math.max(0, Math.min(window.rickTotalFrames-1, Math.floor(frameIdx)));
-      const frame = window.rickFrames[frameIdx];
-      // Draw frame to canvas
-      const tmp = document.createElement('canvas');
-      tmp.width = frame.dims.width;
-      tmp.height = frame.dims.height;
-      const tctx = tmp.getContext('2d');
-      tctx.putImageData(frame.patch, 0, 0);
-      // Fit to canvas size
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(tmp, 0, 0, canvas.width, canvas.height);
-    }
-    function renderAscii(frameIdx) {
-      const ascii = ASCII_FRAMES[frameIdx % ASCII_FRAME_COUNT];
-      document.getElementById('ascii-doodle').textContent = ascii;
-    }
-    function onScroll() {
-      if (!window.rickFrames) return;
-      const progress = getScrollProgress();
-      currentFrame = Math.floor(progress * (window.rickTotalFrames-1));
-      renderFrame(currentFrame);
-      renderAscii(currentFrame);
-      if (progress >= 0.99) {
-        document.getElementById('punchline').style.display = 'flex';
-      } else {
-        document.getElementById('punchline').style.display = 'none';
-      }
-    }
-    window.addEventListener('scroll', () => {
-      requestAnimationFrame(onScroll);
-    });
-    renderAscii(0);
-    // --- Punchline and Restart Logic ---
-    document.getElementById('restart-btn').onclick = () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(() => {
-        document.getElementById('punchline').style.display = 'none';
-      }, 800);
-      const audio = document.getElementById('rick-audio');
-      audio.pause();
-      audio.currentTime = 0;
-    };
-    document.getElementById('audio-btn').onclick = () => {
-      const audio = document.getElementById('rick-audio');
-      audio.play();
-    };
-    function resizeCanvas() {
-      const container = document.querySelector('.canvas-container');
-      const width = container.offsetWidth;
-      canvas.width = width;
-      canvas.height = width * (9/16);
-      renderFrame(currentFrame);
-    }
-    window.addEventListener('resize', resizeCanvas);
-    window.addEventListener('DOMContentLoaded', resizeCanvas);
-  </script>
+
+    <div id="video-container">
+        <canvas id="video-canvas"></canvas>
+    </div>
+
+    <div id="bottom-section">
+        <h2 id="punchline">You've been rickrolled!</h2>
+        <button id="restart-btn" onclick="restart()">Start Again</button>
+        <div id="audio-controls">
+            <button id="play-audio-btn" onclick="toggleAudio()">Play Audio</button>
+        </div>
+    </div>
+
+    <div id="ascii-doodle"></div>
+
+    <script>
+        /* ---------- 0.  CONFIG ---------- */
+        const GIF_URL = 'assets/rickroll.gif';        // Use local asset
+        const TOTAL_FRAMES = 100;          // how many scroll “ticks” we’ll show
+        
+        const canvas   = document.getElementById('video-canvas');
+        const ctx      = canvas.getContext('2d');
+        const videoBox = document.getElementById('video-container');
+        const bottom   = document.getElementById('bottom-section');
+        const asciiBox = document.getElementById('ascii-doodle');
+        
+        /* ---------- 1.  ASCII RICK (bottom-right doodle) ---------- */
+        const asciiFrames = [
+        `Never gonna
+        give you up
+        Never gonna
+        let you down`,
+        
+        `Never gonna
+        run around
+        and desert
+        you`,
+        
+        `Never gonna
+        make you cry
+        Never gonna
+        say goodbye`,
+        
+        `Never gonna
+        tell a lie
+        and hurt you`
+        ];
+        let asciiIndex = 0;
+        setInterval(() => {
+            asciiBox.textContent = asciiFrames[asciiIndex++ % asciiFrames.length];
+        }, 1000);
+        
+        /* ---------- 2.  LOCK SCROLL UNTIL GIF IS READY ---------- */
+        document.body.style.overflow = 'hidden';
+        
+        /* ---------- 3.  LOAD & SLICE GIF ---------- */
+        const sprite = new Image();
+        sprite.crossOrigin = 'anonymous';
+        sprite.onload = () => {
+            /* The GIF is 540 × 540 and contains 30 frames arranged vertically */
+            const FRAMES      = 30;
+            const frameW      = sprite.width;
+            const frameH      = sprite.height / FRAMES;
+        
+            /* unlock scroll & start auto-roll animation */
+            document.body.style.overflow = '';
+            startAutoScroll();
+        
+            /* draw helper */
+            function drawFrame(index) {
+                const f = Math.floor((index / TOTAL_FRAMES) * FRAMES);
+                canvas.width  = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+        
+                const scale = Math.min(canvas.width / frameW, canvas.height / frameH);
+                const dw = frameW * scale;
+                const dh = frameH * scale;
+                const dx = (canvas.width  - dw) / 2;
+                const dy = (canvas.height - dh) / 2;
+        
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(sprite, 0, f * frameH, frameW, frameH,
+                                       dx, dy, dw, dh);
+            }
+        
+            /* ---------- 4.  AUTO-SCROLL + FRAME SYNC ---------- */
+            function startAutoScroll() {
+                let start = null;
+                const DURATION = 4000;  // 4-second smooth roll
+                const target   = document.documentElement.scrollHeight - window.innerHeight;
+        
+                function step(ts) {
+                    if (!start) start = ts;
+                    const progress = Math.min((ts - start) / DURATION, 1);
+        
+                    window.scrollTo(0, progress * target);
+                    drawFrame(Math.floor(progress * TOTAL_FRAMES));
+        
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        /* reveal punchline + audio button */
+                        bottom.style.opacity = 1;
+                        document.getElementById('audio-controls').style.display = 'block';
+                    }
+                }
+                requestAnimationFrame(step);
+            }
+        };
+        sprite.onerror = () => alert('GIF failed to load – please check the URL.');
+        sprite.src = GIF_URL;
+        
+        /* ---------- 5.  AUDIO ---------- */
+        let audio = new Audio('assets/rickroll.mp3');
+        audio.loop = true;
+        let audioPlaying = false;
+        
+        function toggleAudio() {
+            if (!audioPlaying) {
+                audio.play();
+                audioPlaying = true;
+                document.getElementById('play-audio-btn').textContent = 'Pause Audio';
+            } else {
+                audio.pause();
+                audioPlaying = false;
+                document.getElementById('play-audio-btn').textContent = 'Play Audio';
+            }
+        }
+        
+        function restart() {
+            location.reload(); // full reset
+        }
+        
+        /* ---------- 6.  RESIZE ---------- */
+        window.addEventListener('resize', () => sprite.onload());
+        </script>
 </body>
 </html>
