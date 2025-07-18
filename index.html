@@ -162,64 +162,67 @@
 
     <div id="ascii-doodle"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/gifuct-js@1.0.2/dist/gifuct.js"></script>
+    <link rel="icon" href="data:,">
+    <script src="https://cdn.jsdelivr.net/npm/gifuct-js@1.0.2/dist/gifuct.js" onload="startRickroll()"></script>
     <script>
-    const GIF_URL = 'assets/rickroll.gif';
-    const TOTAL_FRAMES = 100;
-    const canvas = document.getElementById('video-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 640;
-    canvas.height = 640;
+    function startRickroll() {
+      const GIF_URL = 'assets/rickroll.gif';
+      const TOTAL_FRAMES = 100;
+      const canvas = document.getElementById('video-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 640;
+      canvas.height = 640;
 
-    // Lock scroll until GIF is ready
-    document.body.style.overflow = 'hidden';
+      // Lock scroll until GIF is ready
+      document.body.style.overflow = 'hidden';
 
-    fetch(GIF_URL)
-      .then(res => res.arrayBuffer())
-      .then(buf => {
-        const gif = window.parseGIF(buf);
-        const frames = window.decompressFrames(gif, true);
+      fetch(GIF_URL)
+        .then(res => res.arrayBuffer())
+        .then(buf => {
+          const gif = parseGIF(buf);
+          const frames = decompressFrames(gif, true);
 
-        document.body.style.overflow = '';
-        document.getElementById('video-container').style.opacity = 1;
+          document.body.style.overflow = '';
+          document.getElementById('video-container').style.opacity = 1;
 
-        function drawFrame(index) {
-          const f = Math.floor((index / TOTAL_FRAMES) * (frames.length - 1));
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          const frame = frames[f];
-          const tmp = document.createElement('canvas');
-          tmp.width = frame.dims.width;
-          tmp.height = frame.dims.height;
-          tmp.getContext('2d').putImageData(frame.patch, 0, 0);
+          function drawFrame(index) {
+            const f = Math.floor((index / TOTAL_FRAMES) * (frames.length - 1));
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const frame = frames[f];
+            const tmp = document.createElement('canvas');
+            tmp.width = frame.dims.width;
+            tmp.height = frame.dims.height;
+            tmp.getContext('2d').putImageData(frame.patch, 0, 0);
 
-          // Center the frame in the 640x640 canvas, scale if needed (contain)
-          const aspect = frame.dims.width / frame.dims.height;
-          let dw, dh, dx, dy;
-          if (aspect > 1) {
-            dw = canvas.width;
-            dh = dw / aspect;
-            dx = 0;
-            dy = (canvas.height - dh) / 2;
-          } else {
-            dh = canvas.height;
-            dw = dh * aspect;
-            dx = (canvas.width - dw) / 2;
-            dy = 0;
+            // Center the frame in the 640x640 canvas, scale if needed (contain)
+            const aspect = frame.dims.width / frame.dims.height;
+            let dw, dh, dx, dy;
+            if (aspect > 1) {
+              dw = canvas.width;
+              dh = dw / aspect;
+              dx = 0;
+              dy = (canvas.height - dh) / 2;
+            } else {
+              dh = canvas.height;
+              dw = dh * aspect;
+              dx = (canvas.width - dw) / 2;
+              dy = 0;
+            }
+            ctx.drawImage(tmp, dx, dy, dw, dh);
           }
-          ctx.drawImage(tmp, dx, dy, dw, dh);
-        }
 
-        // Draw the first frame
-        drawFrame(0);
+          // Draw the first frame
+          drawFrame(0);
 
-        // Scroll logic: as user scrolls, update frame
-        window.addEventListener('scroll', () => {
-          const scrollY = window.scrollY;
-          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-          const progress = Math.min(1, Math.max(0, scrollY / docHeight));
-          drawFrame(Math.floor(progress * (TOTAL_FRAMES - 1)));
+          // Scroll logic: as user scrolls, update frame
+          window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = Math.min(1, Math.max(0, scrollY / docHeight));
+            drawFrame(Math.floor(progress * (TOTAL_FRAMES - 1)));
+          });
         });
-      });
+    }
     </script>
 </body>
 </html>
