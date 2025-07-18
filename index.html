@@ -221,16 +221,26 @@
                 const f = Math.floor((index / TOTAL_FRAMES) * FRAMES);
                 canvas.width  = canvas.offsetWidth;
                 canvas.height = canvas.offsetHeight;
-        
-                const scale = Math.min(canvas.width / frameW, canvas.height / frameH);
-                const dw = frameW * scale;
-                const dh = frameH * scale;
-                const dx = (canvas.width  - dw) / 2;
-                const dy = (canvas.height - dh) / 2;
-        
+
+                // COVER logic: fill canvas, crop if needed
+                const frameAspect = frameW / frameH;
+                const canvasAspect = canvas.width / canvas.height;
+                let sx = 0, sy = 0, sw = frameW, sh = frameH;
+                if (canvasAspect > frameAspect) {
+                    // Canvas is wider, crop top/bottom
+                    sw = frameW;
+                    sh = frameW / canvasAspect;
+                    sx = 0;
+                    sy = (frameH - sh) / 2;
+                } else {
+                    // Canvas is taller, crop sides
+                    sh = frameH;
+                    sw = frameH * canvasAspect;
+                    sy = 0;
+                    sx = (frameW - sw) / 2;
+                }
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(sprite, 0, f * frameH, frameW, frameH,
-                                       dx, dy, dw, dh);
+                ctx.drawImage(sprite, sx, f * frameH + sy, sw, sh, 0, 0, canvas.width, canvas.height);
             }
         
             /* ---------- 4.  AUTO-SCROLL + FRAME SYNC ---------- */
