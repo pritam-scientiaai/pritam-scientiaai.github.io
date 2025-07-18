@@ -210,37 +210,27 @@
             const FRAMES      = 30;
             const frameW      = sprite.width;
             const frameH      = sprite.height / FRAMES;
-        
+
+            // Set canvas size to match frame aspect ratio
+            function resizeCanvas() {
+                const containerWidth = videoBox.offsetWidth;
+                const aspect = frameW / frameH;
+                canvas.width = containerWidth;
+                canvas.height = containerWidth / aspect;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
             /* unlock scroll & start auto-roll animation */
             document.body.style.overflow = '';
             videoBox.style.opacity = 1;
             startAutoScroll();
-        
+
             /* draw helper */
             function drawFrame(index) {
                 const f = Math.floor((index / TOTAL_FRAMES) * FRAMES);
-                canvas.width  = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
-
-                // CONTAIN logic: fit entire frame, letterbox if needed
-                const frameAspect = frameW / frameH;
-                const canvasAspect = canvas.width / canvas.height;
-                let dw, dh, dx, dy;
-                if (canvasAspect > frameAspect) {
-                    // Canvas is wider, fit height
-                    dh = canvas.height;
-                    dw = dh * frameAspect;
-                    dx = (canvas.width - dw) / 2;
-                    dy = 0;
-                } else {
-                    // Canvas is taller, fit width
-                    dw = canvas.width;
-                    dh = dw / frameAspect;
-                    dx = 0;
-                    dy = (canvas.height - dh) / 2;
-                }
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(sprite, 0, f * frameH, frameW, frameH, dx, dy, dw, dh);
+                ctx.drawImage(sprite, 0, f * frameH, frameW, frameH, 0, 0, canvas.width, canvas.height);
             }
         
             /* ---------- 4.  AUTO-SCROLL + FRAME SYNC ---------- */
