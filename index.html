@@ -177,8 +177,8 @@
     fetch(GIF_URL)
       .then(res => res.arrayBuffer())
       .then(buf => {
-        const gif = window.gifuct.parseGIF(buf);
-        const frames = window.gifuct.decompressFrames(gif, true);
+        const gif = window.parseGIF(buf);
+        const frames = window.decompressFrames(gif, true);
 
         document.body.style.overflow = '';
         document.getElementById('video-container').style.opacity = 1;
