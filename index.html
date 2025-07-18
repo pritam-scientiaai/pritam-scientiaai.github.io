@@ -163,40 +163,38 @@
     <div id="ascii-doodle"></div>
 
     <link rel="icon" href="data:,">
-    <script src="assets/gifuct.js" onload="startRickroll()"></script>
+    <script src="https://cdn.jsdelivr.net/npm/omggif@1.0.10/omggif.min.js"></script>
     <script>
-    function startRickroll() {
+    // Wait for DOMContentLoaded to ensure canvas exists
+    document.addEventListener('DOMContentLoaded', function() {
       const GIF_URL = 'assets/rickroll.gif';
       const TOTAL_FRAMES = 100;
       const canvas = document.getElementById('video-canvas');
       const ctx = canvas.getContext('2d');
       canvas.width = 640;
       canvas.height = 640;
-
-      // Lock scroll until GIF is ready
       document.body.style.overflow = 'hidden';
 
       fetch(GIF_URL)
         .then(res => res.arrayBuffer())
         .then(buf => {
-          const gif = parseGIF(buf);
-          const frames = decompressFrames(gif, true);
+          const arr = new Uint8Array(buf);
+          const gifReader = new GifReader(arr);
+          const frameCount = gifReader.numFrames();
+          const frameW = gifReader.width;
+          const frameH = gifReader.height;
 
           document.body.style.overflow = '';
           document.getElementById('video-container').style.opacity = 1;
 
           function drawFrame(index) {
-            const f = Math.floor((index / TOTAL_FRAMES) * (frames.length - 1));
+            const f = Math.floor((index / TOTAL_FRAMES) * (frameCount - 1));
+            const imageData = ctx.createImageData(frameW, frameH);
+            gifReader.decodeAndBlitFrameRGBA(f, imageData.data);
+            // Center and scale to fit (contain) in 640x640
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const frame = frames[f];
-            const tmp = document.createElement('canvas');
-            tmp.width = frame.dims.width;
-            tmp.height = frame.dims.height;
-            tmp.getContext('2d').putImageData(frame.patch, 0, 0);
-
-            // Center the frame in the 640x640 canvas, scale if needed (contain)
-            const aspect = frame.dims.width / frame.dims.height;
             let dw, dh, dx, dy;
+            const aspect = frameW / frameH;
             if (aspect > 1) {
               dw = canvas.width;
               dh = dw / aspect;
@@ -208,13 +206,16 @@
               dx = (canvas.width - dw) / 2;
               dy = 0;
             }
+            // Draw the frame scaled and centered
+            const tmp = document.createElement('canvas');
+            tmp.width = frameW;
+            tmp.height = frameH;
+            tmp.getContext('2d').putImageData(imageData, 0, 0);
             ctx.drawImage(tmp, dx, dy, dw, dh);
           }
 
-          // Draw the first frame
           drawFrame(0);
 
-          // Scroll logic: as user scrolls, update frame
           window.addEventListener('scroll', () => {
             const scrollY = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -222,7 +223,7 @@
             drawFrame(Math.floor(progress * (TOTAL_FRAMES - 1)));
           });
         });
-    }
+    });
     </script>
 </body>
 </html>
